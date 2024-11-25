@@ -1,0 +1,38 @@
+/* public/css/style.css */
+body {
+    background: linear-gradient(to bottom right, #673AB7, #E91E63);
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+.post-container {
+    max-width: 600px;
+    margin: 50px auto;
+    background: #fff;
+    color: #333;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.post-header {
+    display: flex;
+    padding: 10px;
+}
+
+.profile-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.user-info {
+    margin-left: 10px;
+}
+
+.post-image img {
+    width: 100%;
+}
+
+.post-interactions, .comment-section {
+    padding: 10px;
+}

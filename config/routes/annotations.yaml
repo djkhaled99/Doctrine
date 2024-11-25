@@ -1,0 +1,3 @@
+controllers:
+  resource: "C:/xampp/htdocs/web-masters/src/Controller/"
+  type: annotation
