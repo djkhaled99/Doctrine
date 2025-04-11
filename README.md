@@ -15,7 +15,7 @@ Doctrine ist ein Object-Relational-Mapper (ORM) für PHP, der eine leistungsstar
 
 ```bash
 # Klone das Repository
-git clone https://github.com/username/doctrine-projekt.git
+git clone https://github.com/djkhaled99/Doctrine.git
 
 # Wechsle in das Verzeichnis
 cd doctrine-projekt
