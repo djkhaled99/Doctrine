@@ -114,6 +114,105 @@ php bin/console make:repository EntityName
 # Erstellt eine Repository-Klasse für eine Entity
 ```
 
+#### Detaillierte Anleitung zum Erstellen einer Entity
+
+Mit dem `make:entity`-Befehl kannst du interaktiv neue Entitäten erstellen:
+
+```bash
+php bin/console make:entity
+```
+
+Der Befehl führt dich durch einen interaktiven Prozess:
+
+1. Zuerst wirst du nach dem Namen der Entity gefragt (z.B. `Product`)
+2. Dann kannst du Felder hinzufügen:
+   - Feldname (z.B. `name`)
+   - Feldtyp (z.B. `string`, `integer`, `text`, `datetime`, `relation`, etc.)
+   - Feldlänge (bei string-Feldern)
+   - Ist das Feld nullable? (ja/nein)
+
+Beispiel einer Interaktion:
+
+```
+> php bin/console make:entity
+
+ Class name of the entity to create or update (e.g. BraveElephant):
+ > Product
+
+ created: src/Entity/Product.php
+ created: src/Repository/ProductRepository.php
+ 
+ Entity generated! Now let's add some fields!
+ You can always add more fields later manually or by re-running this command.
+
+ New property name (press <return> to stop adding fields):
+ > name
+
+ Field type (enter ? to see all types) [string]:
+ > string
+
+ Field length [255]:
+ > 255
+
+ Can this field be null in the database (nullable) (yes/no) [no]:
+ > no
+
+ New property name (press <return> to stop adding fields):
+ > price
+
+ Field type (enter ? to see all types) [string]:
+ > float
+
+ Can this field be null in the database (nullable) (yes/no) [no]:
+ > no
+
+ New property name (press <return> to stop adding fields):
+ > 
+
+ Success! 
+```
+
+#### Entity-Relationen erstellen
+
+Du kannst auch Beziehungen zwischen Entities definieren:
+
+```bash
+php bin/console make:entity
+```
+
+Wenn du nach dem Feldtyp gefragt wirst, gib `relation` ein:
+
+```
+ Field type (enter ? to see all types) [string]:
+ > relation
+
+ What class should this entity be related to?:
+ > Category
+
+ Relation type? [ManyToOne, OneToMany, ManyToMany, OneToOne]:
+ > ManyToOne
+
+ Is the Product.category property allowed to be null (nullable)? (yes/no) [yes]:
+ > no
+
+ Do you want to add a new property to Category so that you can access/update Product objects from it - e.g. $category->getProducts()? (yes/no) [yes]:
+ > yes
+
+ A new property will also be added to the Category class so that you can access the related Product objects from it.
+
+ New field name inside Category [products]:
+ > products
+
+ Do you want to activate orphanRemoval on your relationship?
+ A Product is "orphaned" when it is removed from its related Category.
+ e.g. $category->removeProduct($product)
+ 
+ NOTE: If a Product may *change* from one Category to another, answer "no".
+
+ Do you want to automatically delete orphaned App\Entity\Product objects (orphanRemoval)? (yes/no) [no]:
+ > no
+```
+
 ### Cache-Management
 
 ```bash
@@ -347,8 +446,86 @@ class ProductController extends AbstractController
 }
 ```
 
+## CRUD-Generator und Forms
+
+### CRUD-Generator
+
+Mit dem CRUD-Generator kannst du schnell Controller, Forms und Templates für deine Entities erstellen:
+
+```bash
+# CRUD-Generator für eine Entity ausführen
+php bin/console make:crud Product
+```
+
+Dies erstellt:
+- Einen Controller mit CRUD-Operationen (Create, Read, Update, Delete)
+- Form-Klassen für die Entity
+- Templates für alle CRUD-Aktionen
+
+### Form-Klassen generieren
+
+```bash
+# Form-Klasse für eine Entity erstellen
+php bin/console make:form ProductType Product
+```
+
+## Zusätzliche nützliche Befehle
+
+```bash
+# Liste aller verfügbaren make-Befehle anzeigen
+php bin/console list make
+
+# Entity von einer bestehenden Tabelle erstellen
+php bin/console make:entity --regenerate
+
+# Validierungs-Constraints hinzufügen
+php bin/console make:validator
+
+# EventSubscriber für Doctrine-Events erstellen
+php bin/console make:subscriber DoctrineEventSubscriber
+
+# Datenbank-Schema als SQL-Datei exportieren
+php bin/console doctrine:schema:update --dump-sql > schema.sql
+
+# Asset installieren (z.B. für AdminBundle)
+php bin/console assets:install --symlink
+```
+
+## Häufige Probleme und Lösungen
+
+### Cache-Probleme
+
+Wenn du Änderungen an Entities vorgenommen hast, aber sie werden nicht erkannt:
+
+```bash
+# Cache leeren
+php bin/console cache:clear
+
+# Alle Doctrine-Caches leeren
+php bin/console doctrine:cache:clear-metadata
+php bin/console doctrine:cache:clear-query
+php bin/console doctrine:cache:clear-result
+```
+
+### Probleme mit Migrations
+
+Bei Konflikten in Migrations:
+
+```bash
+# Migration zurücksetzen
+php bin/console doctrine:migrations:execute YYYYMMDDHHMMSS --down
+
+# Migrations-Tabelle bereinigen (Vorsicht!)
+php bin/console doctrine:migrations:version --delete --all
+
+# Neu starten mit
+php bin/console doctrine:migrations:migrate
+```
+
 ## Weitere Ressourcen
 
 - [Offizielle Doctrine-Dokumentation](https://www.doctrine-project.org/projects/doctrine-orm/en/2.13/index.html)
 - [Symfony Doctrine Integration](https://symfony.com/doc/current/doctrine.html)
 - [DQL Dokumentation](https://www.doctrine-project.org/projects/doctrine-orm/en/2.13/reference/dql-doctrine-query-language.html)
+- [Doctrine Annotations Reference](https://www.doctrine-project.org/projects/doctrine-orm/en/2.13/reference/annotations-reference.html)
+- [Best Practices für Doctrine](https://symfony.com/doc/current/best_practices.html#doctrine)
